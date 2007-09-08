@@ -6,7 +6,7 @@
 Summary:	An apache content filter module
 Name:		apache-%{mod_name}
 Version:	0.6
-Release:	%mkrel 4
+Release:	%mkrel 5
 Group:		System/Servers
 License:	GPL
 URL:		http://software.othello.ch/mod_webfilter/
@@ -28,8 +28,6 @@ Requires:	apache >= 2.2.0
 BuildRequires:	apache-devel >= 2.2.0
 BuildRequires:	file
 BuildRequires:	gdbm-devel
-Provides:	apache2-mod_webfilter
-Obsoletes:	apache2-mod_webfilter
 Epoch:		1
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
