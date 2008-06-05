@@ -81,7 +81,7 @@ libtoolize --copy --force; aclocal-1.7; autoconf; automake-1.7
 
 export CFLAGS=`%{_sbindir}/apxs -q CFLAGS`
 
-%configure2_5x \
+%configure2_5x --localstatedir=/var/lib \
     --with-apxs=%{_sbindir}/apxs \
     --with-htdocs=%{_var}/www/html/admin/mod_webfilter
 
@@ -100,20 +100,20 @@ popd
 %makeinstall_std
 
 install -d %{buildroot}%{_var}/www/html/admin/%{mod_name}
-install -d %{buildroot}%{_localstatedir}/lib/%{mod_name}
+install -d %{buildroot}/var/lib/%{mod_name}
 
 # create some funny defaults ;)
 echo "bad_sites no_visit" | %{buildroot}%{_bindir}/webfilter_create \
-    %{buildroot}%{_localstatedir}/lib/mod_webfilter/blacktypes
+    %{buildroot}/var/lib/mod_webfilter/blacktypes
 
 echo "good_sites go_visit" | %{buildroot}%{_bindir}/webfilter_create \
-    %{buildroot}%{_localstatedir}/lib/mod_webfilter/whitetypes
+    %{buildroot}/var/lib/mod_webfilter/whitetypes
 
 echo "www.microsoft.com bad_sites #bad" | %{buildroot}%{_bindir}/webfilter_create \
-    %{buildroot}%{_localstatedir}/lib/mod_webfilter/black
+    %{buildroot}/var/lib/mod_webfilter/black
 
 echo "nux.se good_sites #good" | %{buildroot}%{_bindir}/webfilter_create \
-    %{buildroot}%{_localstatedir}/lib/mod_webfilter/white
+    %{buildroot}/var/lib/mod_webfilter/white
 
 # remove silly things...
 rm -f %{buildroot}%{_var}/www/html/admin/mod_webfilter/*
@@ -149,11 +149,11 @@ fi
 %defattr(-,root,root)
 %doc doc/mod_webfilter.html AUTHORS ChangeLog NEWS README TODO mod_webfilter.txt
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/httpd/modules.d/%{mod_conf}
-%attr(0755,apache,apache) %dir %{_localstatedir}/lib/mod_webfilter
-%attr(0666,apache,apache) %config(noreplace) %{_localstatedir}/lib/mod_webfilter/white
-%attr(0666,apache,apache) %config(noreplace) %{_localstatedir}/lib/mod_webfilter/black
-%attr(0666,apache,apache) %config(noreplace) %{_localstatedir}/lib/mod_webfilter/whitetypes
-%attr(0666,apache,apache) %config(noreplace) %{_localstatedir}/lib/mod_webfilter/blacktypes
+%attr(0755,apache,apache) %dir /var/lib/mod_webfilter
+%attr(0666,apache,apache) %config(noreplace) /var/lib/mod_webfilter/white
+%attr(0666,apache,apache) %config(noreplace) /var/lib/mod_webfilter/black
+%attr(0666,apache,apache) %config(noreplace) /var/lib/mod_webfilter/whitetypes
+%attr(0666,apache,apache) %config(noreplace) /var/lib/mod_webfilter/blacktypes
 %attr(0755,root,root) %{_bindir}/webfilter_*
 %attr(0755,root,root) %{_libdir}/apache-extramodules/%{mod_so}
 %{_var}/www/html/addon-modules/*
