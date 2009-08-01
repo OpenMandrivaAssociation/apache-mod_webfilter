@@ -6,7 +6,7 @@
 Summary:	An apache content filter module
 Name:		apache-%{mod_name}
 Version:	0.6
-Release:	%mkrel 8
+Release:	%mkrel 9
 Group:		System/Servers
 License:	GPL
 URL:		http://software.othello.ch/mod_webfilter/
