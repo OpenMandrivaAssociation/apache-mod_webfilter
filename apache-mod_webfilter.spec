@@ -6,7 +6,7 @@
 Summary:	An apache content filter module
 Name:		apache-%{mod_name}
 Version:	0.6
-Release:	%mkrel 11
+Release:	%mkrel 12
 Group:		System/Servers
 License:	GPL
 URL:		http://software.othello.ch/mod_webfilter/
@@ -18,7 +18,7 @@ Patch1:		mod_webfilter-0.6-apache220.diff
 Requires:	apache-mod_php
 Requires:	apache-mod_proxy
 BuildRequires:	autoconf2.5
-BuildRequires:	automake1.7
+BuildRequires:	automake
 Requires(pre): rpm-helper
 Requires(postun): rpm-helper
 Requires(pre):	apache-conf >= 2.2.0
@@ -77,7 +77,7 @@ find . -type f|xargs file|grep 'text'|cut -d: -f1|xargs perl -p -i -e 's/\r//'
 
 %build
 export WANT_AUTOCONF_2_5=1
-libtoolize --copy --force; aclocal-1.7; autoconf; automake-1.7
+libtoolize --copy --force; aclocal; autoconf; automake
 
 export CFLAGS=`%{_sbindir}/apxs -q CFLAGS`
 
