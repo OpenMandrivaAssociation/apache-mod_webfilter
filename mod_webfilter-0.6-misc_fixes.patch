@@ -1,0 +1,61 @@
+diff -Naur mod_webfilter-0.6/Makefile.am mod_webfilter-0.6.oden/Makefile.am
+--- mod_webfilter-0.6/Makefile.am	2003-03-09 16:10:19.000000000 +0100
++++ mod_webfilter-0.6.oden/Makefile.am	2003-08-30 20:33:29.000000000 +0200
+@@ -5,5 +5,5 @@
+ #
+ # $Id: Makefile.am,v 1.3 2003/03/09 15:10:19 afm Exp $
+ #
+-SUBDIRS = include tools module doc web
++SUBDIRS = include tools doc web
+ 
+diff -Naur mod_webfilter-0.6/doc/Makefile.am mod_webfilter-0.6.oden/doc/Makefile.am
+--- mod_webfilter-0.6/doc/Makefile.am	2003-03-09 18:23:52.000000000 +0100
++++ mod_webfilter-0.6.oden/doc/Makefile.am	2003-08-30 20:33:20.000000000 +0200
+@@ -8,11 +8,11 @@
+ HTDOC_DIR = @htdoc_dir@
+ man_MANS = webfilter_create.1 webfilter_dump.1 webfilter_add.1		\
+ 	webfilter_delete.1 webfilter_check.1 webfilter_types.1
+-
++DESTDIR =
+ EXTRA_DIST = $(man_MANS) mod_webfilter.html.in
+ 
+ BUILT_SOURCES = mod_webfilter.html
+ 
+ install-data-local:	mod_webfilter.html
+-	if test ! -d $(HTDOC_DIR); then mkdir -p $(HTDOC_DIR); fi
+-	cp mod_webfilter.html $(HTDOC_DIR)
++	if test ! -d $(DESTDIR)$(HTDOC_DIR); then mkdir -p $(DESTDIR)$(HTDOC_DIR); fi
++	cp mod_webfilter.html $(DESTDIR)$(HTDOC_DIR)
+diff -Naur mod_webfilter-0.6/web/Makefile.am mod_webfilter-0.6.oden/web/Makefile.am
+--- mod_webfilter-0.6/web/Makefile.am	2003-03-12 00:15:01.000000000 +0100
++++ mod_webfilter-0.6.oden/web/Makefile.am	2003-08-30 20:33:20.000000000 +0200
+@@ -2,7 +2,7 @@
+ # Makefile.am -- build Makefile for distribution of PHP frontend
+ #
+ EXTRA_DIST = whitelist.php.in
+-
++DESTDIR=
+ BUILT_SOURCES = whitelist.php
+ 
+ HTDOC_DIR = @htdoc_dir@
+@@ -13,6 +13,6 @@
+ 		>whitelist.php
+ 
+ install-data-local:	whitelist.php
+-	if test ! -d $(HTDOC_DIR); then mkdir -p $(HTDOC_DIR); fi
+-	cp whitelist.php $(HTDOC_DIR)
++	if test ! -d $(DESTDIR)$(HTDOC_DIR); then mkdir -p $(DESTDIR)$(HTDOC_DIR); fi
++	cp whitelist.php $(DESTDIR)$(HTDOC_DIR)
+ 
+diff -Naur mod_webfilter-0.6/web/whitelist.php.in mod_webfilter-0.6.oden/web/whitelist.php.in
+--- mod_webfilter-0.6/web/whitelist.php.in	2003-03-17 00:54:28.000000000 +0100
++++ mod_webfilter-0.6.oden/web/whitelist.php.in	2003-08-30 20:33:20.000000000 +0200
+@@ -14,7 +14,7 @@
+ //
+ $bindir = "@BINDIR@";
+ 
+-$dbdir = "/usr/local/apache/htdocs/webfilter/db";
++$dbdir = "/var/lib/mod_webfilter";
+ 
+ $whitelist = $dbdir."/white";
+ $blacklist = $dbdir."/black";

@@ -1,0 +1,67 @@
+--- module/mod_webfilter.c	2003-06-29 11:41:30.000000000 +0200
++++ module/mod_webfilter.c.oden	2005-12-16 01:22:34.000000000 +0100
+@@ -11,7 +11,6 @@
+ #include "http_log.h"
+ #include "ap_config.h"
+ #include "apr_strings.h"
+-#include "pcreposix.h"
+ #include "mod_webfilter_version.h"
+ #include <gdbm.h>
+ #include <sys/types.h>
+@@ -547,13 +546,13 @@
+ } webfilter_match_t;
+ 
+ static int webfilter_try_match(void *vr, const char *key, const char *value) {
+-    regex_t	rx;
+-    regmatch_t	rm;
++    ap_regex_t		rx;
++    ap_regmatch_t	rm;
+     webfilter_match_t	*wm = (webfilter_match_t *)vr;
+     /* try a match for expression key					*/
+     webfilter_ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, wm->r, "[%d] trying %s",
+ 	getpid(), key);
+-    regcomp(&rx, key, REG_ICASE);
++    regcomp(&rx, key, AP_REG_ICASE);
+     if (0 == regexec(&rx, wm->subject, 1, &rm, 0)) {
+ 	/* a match did occur						*/
+ 	wm->havematch = 1;
+@@ -580,7 +579,7 @@
+ }
+ 
+ static int	webfilter_first_match(ap_filter_t *f, int off, char **regex,
+-	regmatch_t *rm) {
++    ap_regmatch_t *rm) {
+     webfilter_match_t	wm;
+     webfilter_ctx	*ctx = (webfilter_ctx *)f->ctx;
+ 
+@@ -611,8 +610,8 @@
+ 
+ static void	webfilter_match(ap_filter_t *f, apr_size_t off) {
+     webfilter_ctx	*ctx;
+-    regex_t		rx;
+-    regmatch_t		rm;
++    ap_regex_t		rx;
++    ap_regmatch_t	rm;
+     ctx = (webfilter_ctx *)f->ctx;
+ 
+     webfilter_ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, f->r,
+@@ -645,7 +644,7 @@
+ 	    "[%d] waiting for closing tag %s", getpid(), endrx);
+ 
+ 	/* look for the thing						*/
+-	regcomp(&rx, endrx, REG_ICASE);
++	regcomp(&rx, endrx, AP_REG_ICASE);
+ 	webfilter_ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, f->r,
+ 	    "[%d] regex %s compiled", getpid(), endrx);
+ 	if (0 == regexec(&rx, (char *)(ctx->buffer + off), 1, &rm, 0)) {
+@@ -737,7 +736,9 @@
+     /* read as many buckets as we can from bb into the buffer		*/
+     webfilter_ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, f->r,
+ 	"[%d] checking brigade", getpid());
+-    APR_BRIGADE_FOREACH(e, bb) {
++    for (e = APR_BRIGADE_FIRST(bb);
++         e != APR_BRIGADE_SENTINEL(bb);
++         e = APR_BUCKET_NEXT(e)) {
+ 	/* ignore flush buckets						*/
+ 	if (APR_BUCKET_IS_FLUSH(e)) {
+ 	    webfilter_ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, f->r,
