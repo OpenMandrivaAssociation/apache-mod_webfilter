@@ -9,7 +9,7 @@ Version:	0.6
 Release:	14
 Group:		System/Servers
 License:	GPL
-URL:		http://software.othello.ch/mod_webfilter/
+URL:		https://software.othello.ch/mod_webfilter/
 Source0:	%{mod_name}-%{version}.tar.bz2
 Source1:	%{mod_conf}.bz2
 Source2:	mod_webfilter.txt.bz2
