@@ -17,6 +17,8 @@ Patch0:		mod_webfilter-0.6-misc_fixes.patch
 Patch1:		mod_webfilter-0.6-apache220.diff
 Requires:	apache-mod_php
 Requires:	apache-mod_proxy
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
 BuildRequires:	autoconf2.5
 BuildRequires:	automake
 Requires(pre): rpm-helper
